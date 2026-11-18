@@ -6,7 +6,6 @@
 
 📄 Formal manuscript: **[manuscript.pdf](manuscript.pdf)** (LaTeX source included)
 📄 Research note: **[English](NOTE_EN.md)** · **[中文](NOTE_ZH.md)**
-🔧 CFD usage guides: **[CFD 使用指南 (ZH)](CFD_GUIDE_ZH.md)** · **[CFD Guide (EN)](CFD_GUIDE_EN.md)**
 
 **Measure a system's intrinsic relaxation time τ (γ = 1/τ) from a single scalar time series.**
 Four independent estimators, convergence-as-identity-check, shuffle-null control.
