@@ -5,6 +5,7 @@
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 📄 Research note: **[English](NOTE_EN.md)** · **[中文](NOTE_ZH.md)**
+🔧 CFD usage guide: **[CFD 非定常模擬使用指南 (ZH)](CFD_GUIDE_ZH.md)**
 
 **Measure a system's intrinsic relaxation time τ (γ = 1/τ) from a single scalar time series.**
 Four independent estimators, convergence-as-identity-check, shuffle-null control.
