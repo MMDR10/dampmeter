@@ -85,6 +85,24 @@ pip install dampmeter
 
 Pure numpy + scipy. Python ≥ 3.9.
 
+## The math (short version)
+
+Every estimator is a direct formula implementation — no black boxes:
+
+| Quantity | Formula | Implemented in |
+|---|---|---|
+| damping rate | γ = 1/τ | `_core.measure` |
+| τ₁ ACF e-fold | R(k) = Σ xₜxₜ₊ₖ / Σ xₜ², solve R(τ) = 1/e (linear interpolation) | `_core.acf_curve`, `efold_from_curve` |
+| τ₂ dCor e-fold | distance correlation decay dCor(xₜ, xₜ₊ₖ), solve = 1/e (Székely et al. 2007, double-centered distance matrices) | `_core.dcor`, `dcor_efold` |
+| τ₃ impulse ring-down | R(k) = E[xₜ·xₜ₊ₖ \| pulse] / E[xₜ² \| pulse] | `_ringdown.ringdown_conditional` |
+| τ₃ envelope variant | envelope = \|Hilbert(x)\|; event threshold = median\|env − med(env)\|·1.4826 (normalized MAD); log-linear fit of decay tail, τ = −1/slope | `_ringdown.ringdown_envelope` |
+| τ₄ recovery | median time to regain pre-drop level (auxiliary, right-censoring prone) | `_core.recovery_tau` |
+| convergence rule | ≥ 3 of 4 estimators within ±30% of the median ⇒ τ established (identity check, not fit quality) | `_core.measure` |
+| shuffle null | within-block permutation must collapse ring-down τ, else the reading is a mathematical artifact | `_null.shuffle_null_ringdown` |
+| phase surrogate | spectrum-preserving phase randomization, estimator stability control | `_null.phase_surrogate_taus` |
+
+Full definitions and derivations: see [`manuscript.pdf`](manuscript.pdf) (§2–3) and the LaTeX source [`manuscript.tex`](manuscript.tex).
+
 ## References
 
 Part of the Ô-HAT dual-operator measurement primitive (IDV caliper + T blind-state gatekeeper).
