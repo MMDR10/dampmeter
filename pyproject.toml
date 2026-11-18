@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dampmeter"
+version = "1.0.0"
+description = "IDV damping caliper: measure a system's intrinsic relaxation time tau (gamma = 1/tau) from a single scalar time series — four-test convergence + shuffle null, KB-RAM / millisecond class, built for edge devices"
+readme = "README.md"
+license = {text = "CC BY 4.0"}
+authors = [
+    {name = "tygtDc, Deep Research", email = "drtygtdc@gmail.com"},
+    {name = "Ma Ka Po"},
+]
+keywords = [
+    "damping", "relaxation time", "time series", "nonlinear dynamics",
+    "autocorrelation", "distance correlation", "ring-down", "edge computing",
+    "structural health monitoring", "attractor",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Science/Research",
+    "License :: Other/Proprietary License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Scientific/Engineering :: Mathematics",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+dampmeter = ["py.typed"]
