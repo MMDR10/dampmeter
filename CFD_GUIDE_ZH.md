@@ -144,3 +144,4 @@ residual 收斂 ≠ 物理量收斂。同一 case 喺唔同網格密度／數值
 - 研究筆記內有完整嘅工程映射表（CFD／邊緣感應器／NN 訓練探針）與硬性邊界（fail-loud 護欄）
 
 *tygtDc, Deep Research · Ma Ka Po（CC BY 4.0，歡迎轉載註明出處）*
+*AI 貢獻披露：MKP 提供原始直覺與研究方向；tygtDc, Deep Research 負責結構性綜合與寫作；Gemini 為寫作策略的對話夥伴。*
