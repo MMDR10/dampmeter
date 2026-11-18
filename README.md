@@ -1,5 +1,11 @@
 # dampmeter — IDV individual damping caliper
 
+[![PyPI](https://img.shields.io/pypi/v/dampmeter.svg)](https://pypi.org/project/dampmeter/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24335208.svg)](https://doi.org/10.5281/zenodo.24335208)
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+
+📄 Research note: **[English](NOTE_EN.md)** · **[中文](NOTE_ZH.md)**
+
 **Measure a system's intrinsic relaxation time τ (γ = 1/τ) from a single scalar time series.**
 Four independent estimators, convergence-as-identity-check, shuffle-null control.
 KB-RAM / millisecond class — built for edge devices.
@@ -80,7 +86,10 @@ Pure numpy + scipy. Python ≥ 3.9.
 
 ## References
 
-Part of the Ô-HAT dual-operator measurement primitive (IDV caliper + T blind-state gatekeeper). Method details, usage boundaries and the engineering interface table: `project/ohat_framework/note-dual-operator-idv-t.md` (framework v3.7, §3.12).
+Part of the Ô-HAT dual-operator measurement primitive (IDV caliper + T blind-state gatekeeper).
+
+- Research note (ZH + EN) + code archive: https://doi.org/10.5281/zenodo.24335208
+- PyPI package: https://pypi.org/project/dampmeter/
 
 ## Authors
 
