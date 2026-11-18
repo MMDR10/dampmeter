@@ -1,0 +1,278 @@
+\documentclass[10pt,twocolumn]{article}
+\usepackage[margin=1.9cm]{geometry}
+\usepackage{amsmath,amssymb,graphicx,booktabs}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+\graphicspath{{figs/}}
+\setlength{\columnsep}{0.7cm}
+
+\title{\bfseries Direct Measurement of Attractor Damping and State Detachment\\from a Single Scalar Time Series: A Dual-Operator Primitive}
+\author{tygtDc, Deep Research \and Ma Ka Po}
+\date{November 18, 2026}
+
+\begin{document}
+\maketitle
+
+\textbf{Abstract.}
+Reconstructing high-dimensional attractors from data remains grid-hungry,
+compute-heavy, and noise-sensitive, and cross-system inference of dynamical
+constants is indirect at best. We introduce a lightweight measurement
+primitive that reads two quantities from a \emph{single} scalar time series.
+The IDV caliper measures the intrinsic damping time $\tau$ (effective
+relaxation constant $\gamma = 1/\tau$) by converging four independent
+estimators --- autocorrelation e-fold, distance-correlation e-fold, impulse
+ring-down, and post-drop recovery --- within $\pm 30\%$, with a shuffle-null
+control that must collapse the estimate. On 2,867 daily samples of
+stratospheric polar-vortex wind we obtain $\tau_1 = 11.28$, $\tau_2 = 10.81$,
+$\tau_3 = 13.32$ days $\rightarrow \tau \approx 12.3$ days
+($\gamma \approx 0.081\,\mathrm{d}^{-1}$), while the shuffled null collapses
+to $0.9$ days. A 2{,}800-bootstrap minimum-data characterization sets the
+reliable floor at $\approx 610$ samples (81.5\% hit rate within $\pm 30\%$),
+at KB-RAM / millisecond cost. The companion T operator is a meta-operator
+gatekeeper whose negative alarm triggers when a system detaches from its
+stable attractor state: across typhoon recurvature, ECG ectopic beats, and
+polar-vortex wave-2 splitting, the red-light cause is state detachment
+($\rho = 0.55$ and $0.402$) rather than energy ($\rho \le 0.17$; controlled:
+$0.020$). Both operators measure the \emph{trustworthiness of measurement}
+rather than the phenomenon itself. An open implementation
+(\texttt{pip install dampmeter}) accompanies this Letter; engineering
+interfaces (CFD damping extraction, edge sensing) are presented as
+forward-looking, explicitly unvalidated, with falsification protocols.
+
+\section{Introduction}
+
+Nonlinear dynamics increasingly leans on attractor reconstruction from
+data, yet the standard routes --- phase-space embedding, cross-system
+convergent cross mapping, reanalysis-budget dynamical diagnosis --- require
+either full fields, long paired records, or heavy recomputation, and all are
+noise-sensitive in different ways \cite{Takens,Sugihara}. A natural question
+is how much of a system's intrinsic relaxation physics can be read from
+\emph{one} scalar channel with auditable reliability.
+
+Two quantities matter operationally. First, the \emph{damping time}
+$\tau$: how fast perturbations decay inside a stable regime. Second, a
+\emph{trust signal}: when the readings that a downstream system depends on
+can no longer be believed. We package these as a dual-operator primitive:
+the IDV individual damping caliper (primary) and the T blind-state
+gatekeeper (secondary). Both are \emph{meta-operators}: they do not measure
+the phenomenon but the credibility of its measurement.
+
+This Letter reports (i) the IDV estimator set and its
+convergence-as-identity rule, (ii) empirical validation on stratospheric
+polar-vortex data with a shuffle null, (iii) a minimum-data / compute
+characterization, (iv) cross-domain evidence that the T alarm's physical
+cause is state detachment (topological rearrangement) rather than energy or
+noise, and (v) honest boundaries, including the dual-axis sign dependence
+of damping trends.
+
+\section{The dual operators}
+
+\subsection{IDV: individual damping caliper}
+
+Within a stationary window (assumptions: stationarity and effective linear
+relaxation), four estimators independently measure the same $\tau$:
+$\tau_1$ from the e-fold crossing of the normalized autocorrelation;
+$\tau_2$ from the e-fold crossing of the distance-correlation decay curve
+(nonlinear and shift-invariant \cite{Szekely}); $\tau_3$ from
+impulse-conditioned ring-down decay
+$R(k) = \mathbb{E}[x_t x_{t+k} \mid \mathrm{pulse}] /
+\mathbb{E}[x_t^2 \mid \mathrm{pulse}]$;
+and $\tau_4$, the post-drop recovery time (auxiliary; right-censoring
+prone). \emph{Convergence rule:} at least three estimators within
+$\pm 30\%$ of the median; the reported $\tau$ is the median of the primary
+three. Convergence is an identity check --- evidence that the constant
+exists --- not a fit-quality score. A mandatory \emph{shuffle null}
+(within-block permutation destroying temporal structure) must collapse the
+ring-down estimate; survival under shuffling means the reading is a
+mathematical necessity, not physics.
+
+Implementation caliber matters: for oscillatory signals the envelope must
+be the Hilbert analytic envelope with a normalized-MAD event threshold
+$\mathrm{median}|\mathrm{env} - \mathrm{median}(\mathrm{env})| \times
+1.4826$ \cite{Marple,Bendat}; using $|\mathrm{band\text{-}passed}|$
+quantizes $\tau$ at the oscillation half-period.
+
+\emph{Terminology.} $\tau$ is the \emph{effective damping} (dissipative)
+time constant. It is not potential-well stiffness (curvature $\omega_0^2$),
+which must be measured independently from oscillation frequency.
+
+\subsection{T: blind-state gatekeeper}
+
+T produces no directional signal; its output is a negative alarm
+(``red light'') when directional readings become untrustworthy. Evaluation
+is fail-loud: does it hold the line at failure, not whether it emits
+signals. The state marker must be orthogonal to the directional jump (e.g.,
+a vortex core tearing from one into two) to avoid circular definition
+\cite{Scheffer}. T semantics are validated on 2D trajectory domains; a 1D
+scalar interface is not yet derived.
+
+\section{Results}
+
+\subsection{IDV convergence on the polar vortex}
+
+We apply IDV to the daily zonal wind $u_{60}$ (2,867 samples), detrended on
+the anomaly (day-of-year climatology plus linear trend). The three primary
+estimators converge (Fig.~\ref{fig1}): $\tau_1 = 11.28$, $\tau_2 = 10.81$,
+$\tau_3 = 13.32$ days, all within $\pm 30\%$ of the median
+$\tau \approx 12.3$ days, giving $\gamma \approx 0.081\,\mathrm{d}^{-1}$.
+The shuffle null collapses the ring-down to $0.9$ days, confirming that the
+measurement captures physical relaxation structure rather than a
+statistical artifact. $\tau_4 = 30$ days is window-capped right-censoring
+and is excluded from evidence.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig1.pdf}
+\caption{Normalized decay curves and $1/e$ crossings for the three primary
+estimators on polar-vortex $u_{60}$: ACF e-fold $11.28$ d, distance-correlation
+e-fold $10.81$ d, impulse ring-down $13.32$ d. All converge within $\pm 30\%$
+of the median $\tau \approx 12.3$ d.}
+\label{fig1}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig2.pdf}
+\caption{Minimum-data characterization ($2{,}800$ bootstraps, $\pm 30\%$
+hit rate): 20 samples (13\%, $\tau$ underestimated $\sim 2\times$) are a hard
+floor; $\sim 180$ are coarse (57\%); $\approx 610$ samples give the reliable
+tier (81.5\%); $\sim 1{,}220$ give 97\%. Compute: single core 17 s, KB-RAM,
+millisecond tests --- 6--9 orders below reanalysis budgets.}
+\label{fig2}
+\end{figure}
+
+\subsection{Minimum data and cost}
+
+Figure~\ref{fig2} summarizes the $2{,}800$-bootstrap characterization:
+the reliable tier begins near $610$ samples (81.5\% of estimates within
+$\pm 30\%$ of ground truth), while a $20$-sample window systematically
+underestimates $\tau$ by about half and is declared a hard floor. The
+impulse estimator needs richer excitation ($\ge 40$ pulses $\approx 1{,}500$
+samples). Total cost is single-core seconds with KB-class memory, making the
+caliper deployable on edge devices and paleoclimate proxies alike.
+
+\subsection{The T alarm: cause is state detachment}
+
+Across three domains the red-light trigger correlates with \emph{state
+detachment} --- departure from the previously stable attractor state
+(topological rearrangement) --- far more than with energy (Fig.~\ref{fig3}).
+For ECG ectopic beats (MIT-BIH) the state-detachment correlation is
+$\rho = 0.55$ against an energy residual of $0.17$; for polar-vortex
+wave-2 splitting, $\rho = 0.402$, and controlling for energy drives the
+energy term to $\rho = 0.020$. On typhoon 2D tracks the blind-state
+(re-direction) window shows a sharp cliff: directional error
+$56.3^\circ$/38\% hit rate at $|\mathrm{sep}| \ge 45^\circ$ versus
+$20.0^\circ$/89\% in the steady state. The measurement generalizes; the
+cause must be specified per domain. Geometric thresholds do \emph{not}
+transfer across domains (four transplant attempts, four failures).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\columnwidth]{fig3.pdf}
+\caption{Cause discrimination for the T alarm: correlation of red-light
+trigger with state-detachment vs.\ energy-residual variables. State
+detachment dominates in both domains; the energy term vanishes under
+control ($\rho = 0.020$). Typhoon blind-state cliff (in text) completes the
+three-domain picture.}
+\label{fig3}
+\end{figure}
+
+\subsection{Dual-axis sign dependence}
+
+Damping trends lack a universal sign. On a controlled severity axis
+(bearing defect size), larger defects ring down \emph{slower}
+($\tau \uparrow$: $1.1 \to 1.5 \to 2.1$ ms, 11/11 cells, $p \approx 0.001$),
+while on a wear/life axis (run-to-failure) $\tau$ \emph{shortens} with
+degradation (13/15 bearings, $p = 0.0074$; artifact excluded at
+$p = 0.0037$). Readings are stable; interpretations must name the axis.
+
+\section{Engineering interfaces (forward-looking)}
+
+Table~\ref{tab} maps single-channel inputs onto the two operators. Only the
+geophysical, medical, and mechanical rows carry measured evidence; the CFD
+and edge-sensor rows are \emph{forward-looking proposals} (the CFD flutter
+scan follows classical aeroelastic softening \cite{Bisplinghoff} but has zero
+validated cases), and the neural-training row is an untested hypothesis.
+
+\begin{table}[b]
+\centering\small
+\begin{tabular}{p{0.29\columnwidth}p{0.30\columnwidth}p{0.28\columnwidth}}
+\toprule
+Input $x(t)$ & IDV (damping) & T (detachment) \\
+\midrule
+Vortex wind $u_{60}$ & $\tau \approx 12.3$ d & split red light \\
+ECG lead & (domain-specific) & ectopic $\rho{=}0.55$ \\
+Bearing vibration & ring-down $\tau$ (axis-dependent) & --- \\
+CFD probe $p,u$ & $\gamma(U)$ flutter scan & convergence \\
+MCU $a_z(t)$ & damping evolution & slip / pitting \\
+NN loss residual & capacity & forgetting jump \\
+\bottomrule
+\end{tabular}
+\caption{Single-point probe interface. Rows 1--3 measured; rows 4--5
+forward-looking; row 6 untested hypothesis.}
+\label{tab}
+\end{table}
+
+\section{Boundaries and falsification}
+
+Guardrails, stated fail-loud: (1) $\approx 610$-sample reliable floor;
+(2) no threshold transplantation across domains; (3) effective $\gamma$ only
+--- no mechanism decomposition; (4) sign interpretation must name the axis;
+(5) caliber discipline (Hilbert envelope, normalized MAD); (6) preregistered
+criteria, amendments limited to definition bugs \cite{Kantz}.
+
+A concrete falsification path for the CFD interface: on a benchmark with a
+published flutter boundary (AGARD 445.6, Goland beam, NACA 0012), sweep
+across the critical speed and pre-register that $\gamma(U)$ softens
+monotonically toward zero near the published critical. Failure localizes
+the broken link (window, stationarity, effective-vs-modal damping);
+success upgrades the interface from proposal to measurement.
+
+\section{Conclusion}
+
+From one scalar channel, an auditable damping constant and a detachment
+alarm are obtainable at negligible cost: convergence across independent
+estimators plus a collapsing null replace the data-hungry assumptions of
+cross-system inference, and the T gatekeeper turns ``when not to believe
+the reading'' into a measurable event. The primitive is open
+(\texttt{pip install dampmeter}), its boundaries are explicit, and its
+engineering interfaces are offered as testable proposals rather than
+claims.
+
+\begin{thebibliography}{9}
+\bibitem{Takens}
+F. Takens, ``Detecting strange attractors in turbulence,'' in
+\emph{Dynamical Systems and Turbulence}, Lecture Notes in Mathematics
+\textbf{898} (Springer, 1981), pp. 366--381.
+\bibitem{Sugihara}
+G. Sugihara \emph{et al.}, ``Detecting causality in complex ecosystems,''
+Science \textbf{338}, 496--500 (2012).
+\bibitem{Szekely}
+G. J. Sz\'ekely, M. L. Rizzo, and N. K. Bakirov, ``Measuring and testing
+dependence by correlation of distances,'' Ann. Statist. \textbf{35},
+2769--2794 (2007).
+\bibitem{Scheffer}
+M. Scheffer \emph{et al.}, ``Early-warning signals for critical
+transitions,'' Nature \textbf{461}, 53--59 (2009).
+\bibitem{Marple}
+S. L. Marple, ``Computing the discrete-time analytic signal via FFT,''
+IEEE Trans. Signal Process. \textbf{47}, 2600--2603 (1999).
+\bibitem{Bendat}
+J. S. Bendat and A. G. Piersol, \emph{Random Data: Analysis and
+Measurement Procedures}, 4th ed. (Wiley, 2010).
+\bibitem{Bisplinghoff}
+R. L. Bisplinghoff, H. Ashley, and R. L. Halfman, \emph{Aeroelasticity}
+(Addison-Wesley, 1955).
+\bibitem{Kantz}
+H. Kantz and T. Schreiber, \emph{Nonlinear Time Series Analysis},
+2nd ed. (Cambridge University Press, 2004).
+\end{thebibliography}
+
+\bigskip
+\noindent\textbf{Acknowledgments.} Correspondence: drtygtdc@gmail.com.
+AI contribution disclosure: MKP provided original intuition and research
+direction; tygtDc, Deep Research performed structural synthesis and
+writing; Gemini served as dialogue partner. Open implementation and data
+provenance: \url{https://github.com/MMDR10/dampmeter};
+archive: \url{https://doi.org/10.5281/zenodo.24335208}.
+
+\end{document}

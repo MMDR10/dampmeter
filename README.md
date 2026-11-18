@@ -1,9 +1,10 @@
 # dampmeter — IDV individual damping caliper
 
 [![PyPI](https://img.shields.io/pypi/v/dampmeter.svg)](https://pypi.org/project/dampmeter/)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24335208.svg)](https://doi.org/10.5281/zenodo.24335208)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24338596.svg)](https://doi.org/10.5281/zenodo.24338596)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
+📄 Formal manuscript: **[manuscript.pdf](manuscript.pdf)** (LaTeX source included)
 📄 Research note: **[English](NOTE_EN.md)** · **[中文](NOTE_ZH.md)**
 🔧 CFD usage guides: **[CFD 使用指南 (ZH)](CFD_GUIDE_ZH.md)** · **[CFD Guide (EN)](CFD_GUIDE_EN.md)**
 
